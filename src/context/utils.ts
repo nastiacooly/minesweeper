@@ -127,8 +127,5 @@ export const openCellAndNeighbours = (
 };
 
 export const hasWon = (openedSafeCells: Set<string>): boolean => {
-	if (openedSafeCells.size === ROWS * COLUMNS - MINES) {
-		return true;
-	}
-	return false;
+	return openedSafeCells.size === ROWS * COLUMNS - MINES;
 };
