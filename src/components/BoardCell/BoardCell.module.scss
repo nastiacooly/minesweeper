@@ -2,4 +2,27 @@
 	width: 60px;
 	height: 60px;
 	padding: 0;
+	text-align: center;
+}
+
+span {
+	font-weight: bold;
+	font-size: 2rem;
+	color: black;
+
+	&[data-content="1"] {
+		color: blue;
+	}
+
+	&[data-content="2"] {
+		color: green;
+	}
+
+	&[data-content="3"] {
+		color: red;
+	}
+
+	&[data-content="4"] {
+		color: purple;
+	}
 }
