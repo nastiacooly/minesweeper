@@ -5,7 +5,7 @@ import { BoardCell } from "../BoardCell/BoardCell";
 import styles from "./Board.module.scss";
 
 export const Board = () => {
-	const { board, difficulty, result, openedSafeCells } = useGameState();
+	const { board, difficulty, result, openedSafeCells, gameId } = useGameState();
 
 	return (
 		<div className={styles.root}>
@@ -13,14 +13,14 @@ export const Board = () => {
 				<p>Difficulty: {difficulty.toUpperCase()}</p>
 				{board.map((row, r) => {
 					return (
-						<div key={`row-${r}`} className={styles.row}>
+						<div key={`${gameId}-row-${r}`} className={styles.row}>
 							{row.map((content, c) => {
 								const cellIsOpened = openedSafeCells.has(
 									createCoordinateString(r, c)
 								);
 								return (
 									<BoardCell
-										key={`cell-${r}-${c}`}
+										key={`${gameId}-cell-${r}-${c}`}
 										content={content}
 										row={r}
 										col={c}
@@ -29,6 +29,7 @@ export const Board = () => {
 												? content === -1 || cellIsOpened
 												: cellIsOpened
 										}
+										disabledClicks={result !== undefined}
 									/>
 								);
 							})}

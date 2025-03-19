@@ -11,6 +11,7 @@ import {
 } from "react";
 import {
 	Board,
+	generateGameId,
 	hasWon,
 	initNewGameBoard,
 	openCellAndNeighbours,
@@ -24,6 +25,7 @@ interface GameState {
 	difficulty: DifficultyLevel;
 	openedSafeCells: Set<string>;
 	result: GameResult;
+	gameId: number;
 }
 
 interface GameActions {
@@ -42,6 +44,7 @@ export const GameContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		new Set()
 	);
 	const [result, setResult] = useState<GameResult>();
+	const [gameId, setGameId] = useState<number>(generateGameId());
 
 	useEffect(() => {
 		if (hasWon(openedSafeCells)) {
@@ -54,6 +57,7 @@ export const GameContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		setResult(undefined);
 		setBoard(initNewGameBoard());
 		setOpenedSafeCells(new Set());
+		setGameId(generateGameId());
 	}, []);
 
 	const openCell = useCallback(
@@ -75,8 +79,8 @@ export const GameContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	);
 
 	const gameStateContextValue = useMemo(
-		() => ({ board, difficulty, result, openedSafeCells }),
-		[board, difficulty, result, openedSafeCells]
+		() => ({ board, difficulty, result, openedSafeCells, gameId }),
+		[board, difficulty, result, openedSafeCells, gameId]
 	);
 
 	const gameActionsContextValue = useMemo(

@@ -125,3 +125,7 @@ export const openCellAndNeighbours = (
 export const hasWon = (openedSafeCells: Set<string>): boolean => {
 	return openedSafeCells.size === ROWS * COLUMNS - MINES;
 };
+
+export const generateGameId = () => {
+	return new Date().getTime();
+};
