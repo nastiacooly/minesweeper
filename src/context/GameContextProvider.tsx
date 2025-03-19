@@ -27,7 +27,7 @@ interface GameState {
 }
 
 interface GameActions {
-	openSafeCell: (row: number, col: number) => void;
+	openCell: (row: number, col: number) => void;
 	setGameResult: Dispatch<SetStateAction<GameResult>>;
 	startNewGame: () => void;
 }
@@ -53,13 +53,20 @@ export const GameContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		setDifficulty("novice");
 		setResult(undefined);
 		setBoard(initNewGameBoard());
+		setOpenedSafeCells(new Set());
 	}, []);
 
-	const openSafeCell = useCallback(
+	const openCell = useCallback(
 		(x: number, y: number) => {
 			if (result !== undefined) {
 				return;
 			}
+
+			if (board[x][y] === -1) {
+				setResult("loss");
+				return;
+			}
+
 			setOpenedSafeCells((prevOpenedCells) => {
 				return openCellAndNeighbours(board, x, y, new Set(prevOpenedCells));
 			});
@@ -67,16 +74,19 @@ export const GameContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		[board, result]
 	);
 
-	const gameContextValue = useMemo(
+	const gameStateContextValue = useMemo(
 		() => ({ board, difficulty, result, openedSafeCells }),
 		[board, difficulty, result, openedSafeCells]
 	);
 
+	const gameActionsContextValue = useMemo(
+		() => ({ openCell, setGameResult: setResult, startNewGame }),
+		[openCell, startNewGame]
+	);
+
 	return (
-		<GameStateContext.Provider value={gameContextValue}>
-			<GameActionsContext.Provider
-				value={{ openSafeCell, setGameResult: setResult, startNewGame }}
-			>
+		<GameStateContext.Provider value={gameStateContextValue}>
+			<GameActionsContext.Provider value={gameActionsContextValue}>
 				{children}
 			</GameActionsContext.Provider>
 		</GameStateContext.Provider>

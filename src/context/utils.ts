@@ -102,10 +102,6 @@ export const openCellAndNeighbours = (
 ): Set<string> => {
 	let updated = new Set(openedCellsSet);
 
-	if (board[row][col] === -1) {
-		return updated;
-	}
-
 	updated = openCell(row, col, updated);
 
 	if (board[row][col] > 0) {

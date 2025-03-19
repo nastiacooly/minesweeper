@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode } from "react";
 import { Mine } from "./Mine.svg";
 import { useGameActions } from "../../context/useGameContext";
 
@@ -12,8 +12,7 @@ interface Props {
 }
 
 export const BoardCell: FC<Props> = ({ content, isOpen, row, col }) => {
-	const { openSafeCell, setGameResult } = useGameActions();
-	const [open, setOpen] = useState<boolean>(isOpen);
+	const { openCell } = useGameActions();
 
 	const getContent = (): ReactNode => {
 		switch (content) {
@@ -29,17 +28,12 @@ export const BoardCell: FC<Props> = ({ content, isOpen, row, col }) => {
 	const contentDisplay = getContent();
 
 	const handleLeftClick = () => {
-		if (content === -1) {
-			setOpen(true);
-			setGameResult("loss");
-		} else {
-			openSafeCell(row, col);
-		}
+		openCell(row, col);
 	};
 
 	return (
 		<button onClick={handleLeftClick} disabled={isOpen} className={styles.root}>
-			{(isOpen || open) && contentDisplay}
+			{isOpen && contentDisplay}
 		</button>
 	);
 };
