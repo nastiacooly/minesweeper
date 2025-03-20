@@ -1,13 +1,13 @@
 .root {
-	width: 60px;
-	height: 60px;
+	width: 1.5rem;
+	height: 1.5rem;
 	padding: 0;
 	text-align: center;
 }
 
 span {
 	font-weight: bold;
-	font-size: 2rem;
+	font-size: 1rem;
 	color: black;
 
 	&[data-content="1"] {

@@ -10,7 +10,7 @@ export const Board = () => {
 	return (
 		<div className={styles.root}>
 			<div className={styles["board-wrapper"]}>
-				<p>Difficulty: {difficulty.toUpperCase()}</p>
+				<p>Current game difficulty: {difficulty.toUpperCase()}</p>
 				{board.map((row, r) => {
 					return (
 						<div key={`${gameId}-row-${r}`} className={styles.row}>

@@ -11,6 +11,7 @@ import {
 } from "react";
 import {
 	Board,
+	DifficultyLevel,
 	generateGameId,
 	hasWon,
 	initNewGameBoard,
@@ -18,7 +19,6 @@ import {
 } from "./utils";
 
 type GameResult = "win" | "loss" | undefined;
-type DifficultyLevel = "novice" | "amateur" | "master";
 
 interface GameState {
 	board: Board;
@@ -31,7 +31,7 @@ interface GameState {
 interface GameActions {
 	openCell: (row: number, col: number) => void;
 	setGameResult: Dispatch<SetStateAction<GameResult>>;
-	startNewGame: () => void;
+	startNewGame: (difficulty: DifficultyLevel) => void;
 }
 
 const GameStateContext = createContext<GameState | null>(null);
@@ -39,7 +39,9 @@ const GameActionsContext = createContext<GameActions | null>(null);
 
 export const GameContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [difficulty, setDifficulty] = useState<DifficultyLevel>("novice");
-	const [board, setBoard] = useState<Board>(initNewGameBoard());
+	const [board, setBoard] = useState<Board>(
+		initNewGameBoard(difficulty ?? "novice")
+	);
 	const [openedSafeCells, setOpenedSafeCells] = useState<Set<string>>(
 		new Set()
 	);
@@ -47,15 +49,15 @@ export const GameContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [gameId, setGameId] = useState<number>(generateGameId());
 
 	useEffect(() => {
-		if (hasWon(openedSafeCells)) {
+		if (hasWon(openedSafeCells, difficulty)) {
 			setResult("win");
 		}
-	}, [openedSafeCells]);
+	}, [openedSafeCells, difficulty]);
 
-	const startNewGame = useCallback(() => {
-		setDifficulty("novice");
+	const startNewGame = useCallback((difficulty: DifficultyLevel) => {
+		setDifficulty(difficulty);
 		setResult(undefined);
-		setBoard(initNewGameBoard());
+		setBoard(initNewGameBoard(difficulty));
 		setOpenedSafeCells(new Set());
 		setGameId(generateGameId());
 	}, []);

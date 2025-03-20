@@ -1,5 +1,4 @@
 import { FC, MouseEventHandler, ReactNode, useState } from "react";
-import { Mine } from "./Mine.svg";
 import { useGameActions } from "../../context/useGameContext";
 
 import styles from "./BoardCell.module.scss";
@@ -25,7 +24,7 @@ export const BoardCell: FC<Props> = ({
 	const getContent = (): ReactNode => {
 		switch (content) {
 			case -1:
-				return <Mine />;
+				return <span data-content={content}>X</span>;
 			case 0:
 				return "";
 			default:
